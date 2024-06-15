@@ -3,11 +3,12 @@ package xyz.skylar11d.minecraftp.serverstatus.utilities.plugin;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketListenerPriority;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
+import org.jetbrains.annotations.NotNull;
 import xyz.skylar11d.minecraftp.serverstatus.Main;
 import xyz.skylar11d.minecraftp.serverstatus.listeners.ClientBoundStatusInterceptor;
 
 public class PluginManager {
-    private Main main;
+    private @NotNull Main main;
 
     public PluginManager(Main instance){
         this.main = instance;
@@ -23,7 +24,7 @@ public class PluginManager {
     }
 
     public void initAPI(){
-        PacketEvents.setAPI(SpigotPacketEventsBuilder.build(this.main));
+        PacketEvents.setAPI(SpigotPacketEventsBuilder.build(main));
 
         PacketEvents.getAPI().getSettings()
                 .bStats(false)

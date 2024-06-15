@@ -23,4 +23,9 @@ public class MainProvider implements Provider {
     public void onDisable() {
         PacketEvents.getAPI().terminate();
     }
+
+    @Override
+    public PluginManager getPluginManager() {
+        return pluginManager;
+    }
 }
