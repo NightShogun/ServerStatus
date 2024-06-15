@@ -1,8 +1,10 @@
 package xyz.skylar11d.minecraftp.serverstatus.utilities.plugin;
 
 import com.github.retrooper.packetevents.PacketEvents;
+import com.github.retrooper.packetevents.event.PacketListenerPriority;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import xyz.skylar11d.minecraftp.serverstatus.Main;
+import xyz.skylar11d.minecraftp.serverstatus.listeners.ClientBoundStatusInterceptor;
 
 public class PluginManager {
     private Main main;
@@ -11,10 +13,16 @@ public class PluginManager {
         this.main = instance;
     }
 
-    public void init(){
+    public void initAll(){
 
-        main.getLogger().info("Initializing dependencies..");
+        main.getLogger().info("Initializing..");
+        initAPI();
+        registerListeners();
+        registerCommands();
 
+    }
+
+    public void initAPI(){
         PacketEvents.setAPI(SpigotPacketEventsBuilder.build(this.main));
 
         PacketEvents.getAPI().getSettings()
@@ -23,7 +31,10 @@ public class PluginManager {
                 .reEncodeByDefault(false);
 
         PacketEvents.getAPI().init();
-
+    }
+    public void registerCommands(){}
+    public void registerListeners(){
+        PacketEvents.getAPI().getEventManager().registerListener(new ClientBoundStatusInterceptor(), PacketListenerPriority.NORMAL);
     }
 
 }

@@ -15,7 +15,7 @@ public class MainProvider implements Provider {
 
     @Override
     public void onEnable() {
-        pluginManager.init();
+        pluginManager.initAll();
 
     }
 
