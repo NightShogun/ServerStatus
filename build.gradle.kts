@@ -29,7 +29,7 @@ dependencies {
 
 tasks.withType<ProcessResources> {
     from(sourceSets.main.get().resources) {
-        include("plugin.yml", "properties.yml")
+        include("plugin.yml")
         filter { line -> line.replace("%project_version%", project.version.toString()) }
         duplicatesStrategy = DuplicatesStrategy.INCLUDE
     }

@@ -11,48 +11,26 @@ import com.github.retrooper.packetevents.wrapper.handshaking.client.WrapperHands
 import com.github.retrooper.packetevents.wrapper.status.client.WrapperStatusClientPing;
 import com.github.retrooper.packetevents.wrapper.status.server.WrapperStatusServerPong;
 import com.github.retrooper.packetevents.wrapper.status.server.WrapperStatusServerResponse;
+import com.google.gson.JsonObject;
 import org.bukkit.Bukkit;
+import xyz.skylar11d.minecraftp.serverstatus.Main;
+import xyz.skylar11d.minecraftp.serverstatus.utilities.builder.StatusPacket;
 
 public class ClientBoundStatusInterceptor implements PacketListener {
 
     @Override
     public void onPacketReceive(PacketReceiveEvent e) {
 
-        synchronized (this){
+        //Bukkit.getScheduler().runTask(Main.getPlugin(Main.class), () -> {
             if (e.getPacketType() == PacketType.Handshaking.Client.HANDSHAKE) {
 
                 WrapperHandshakingClientHandshake wrapperPacket = new WrapperHandshakingClientHandshake(e);
 
                 wrapperPacket.setProtocolVersion(763);
                 wrapperPacket.setClientVersion(ClientVersion.V_1_20);
+
             }
+        //});
 
-            if (e.getPacketType() == PacketType.Status.Client.PING) {
-                WrapperStatusClientPing wrapperStatusClientPing = new WrapperStatusClientPing(e);
-
-                wrapperStatusClientPing.setClientVersion(ClientVersion.V_1_20);
-            }
-        }
-
-    }
-
-    @Override
-    public void onPacketSend(PacketSendEvent e) {
-
-        if(e.getPacketType() == PacketType.Status.Server.RESPONSE){
-
-            WrapperStatusServerResponse wrappedPacket = new WrapperStatusServerResponse(e);
-
-            wrappedPacket.setComponent(packetObj);
-        }
-
-        if(e.getPacketType() == PacketType.Status.Server.PONG){
-
-            System.out.println("[DEBUG] OUTBOUND ignited");
-
-            WrapperStatusServerPong wrapperStatusServerPong = new WrapperStatusServerPong(e);
-            wrapperStatusServerPong.setClientVersion(ClientVersion.V_1_20);
-
-        }
     }
 }

@@ -1,5 +1,6 @@
 package xyz.skylar11d.minecraftp.serverstatus.utilities.plugin.impl;
 
+import xyz.skylar11d.minecraftp.serverstatus.utilities.configuration.ConfigManager;
 import xyz.skylar11d.minecraftp.serverstatus.utilities.plugin.PluginManager;
 
 public interface Provider {
@@ -9,5 +10,6 @@ public interface Provider {
     default void onDisable() {}
 
     PluginManager getPluginManager();
+    ConfigManager getConfigManager();
 
 }
