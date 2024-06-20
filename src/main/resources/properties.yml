@@ -1,3 +1,7 @@
-hover: ''
-protocol: 763
-motd: 'test'
+motd:
+  text: 'hi'
+version:
+  display:
+    text: ''
+    hover: ''
+  protocol: 763 #the protocol number for 1.20 version, check the wiki for more info about minecraft version protocols numbers

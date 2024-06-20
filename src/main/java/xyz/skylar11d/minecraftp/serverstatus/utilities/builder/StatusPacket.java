@@ -4,13 +4,49 @@ import com.google.gson.JsonObject;
 
 public class StatusPacket {
 
-    private JsonObject object;
+    private final JsonObject object;
 
     public StatusPacket(){
         this.object = new JsonObject();
     }
 
+    public StatusPacket version(int protocol){
+
+        if(protocol == 0)return this;
+
+        JsonObject version = new JsonBuilder()
+                .addProperty("protocol", protocol)
+                .build();
+
+        this.object.add("version", version);
+
+        return this;
+    }
+
+    public StatusPacket version(String display){
+
+        if(display.isEmpty())return this;
+
+        JsonObject version = new JsonBuilder()
+                .addProperty("name", display)
+                .build();
+
+        this.object.add("version", version);
+
+        return this;
+    }
+
     public StatusPacket version(String display, int protocol){
+
+        if(display.isEmpty() && protocol != 0) {
+            this.version(protocol);
+            return this;
+        }
+
+        if(!display.isEmpty() && protocol == 0) {
+            this.version(display);
+            return this;
+        }
 
         JsonObject version = new JsonBuilder()
                 .addProperty("name", display)
@@ -23,6 +59,9 @@ public class StatusPacket {
     }
 
     public StatusPacket players(String hover){
+
+        if(hover.isEmpty())
+            throw new IllegalArgumentException("The 'hover' field shoudn't be empty, check the respective configuration file");
 
         JsonObject sample = new JsonBuilder()
                 .addProperty("name", hover)
@@ -54,6 +93,8 @@ public class StatusPacket {
     }
 
     public StatusPacket motd(String text){
+
+        if(text.isEmpty())throw new IllegalArgumentException("The 'text' field in the motd section shoudn't be empty, check the respective configuration file");
 
         this.object.addProperty("description", text);
 

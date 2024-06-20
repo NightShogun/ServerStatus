@@ -3,13 +3,12 @@ package xyz.skylar11d.minecraftp.serverstatus;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.skylar11d.minecraftp.serverstatus.utilities.plugin.impl.Provider;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
+import java.util.logging.Logger;
 
 public class Main extends JavaPlugin {
 
     private Provider provider;
+    public static final Logger LOG = Logger.getLogger("ServerStatus");
 
     @Override
     public void onEnable() {

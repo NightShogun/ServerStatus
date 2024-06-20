@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "xyz.skylar11d.minecraftp.serverstatus"
-version = "1.0"
+version = "1.0-beta"
 
 tasks.compileJava {
     options.encoding = "UTF-8"

@@ -6,18 +6,29 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.HumanEntity;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.awt.*;
+import java.util.List;
 
-public abstract class ICommand implements CommandExecutor {
+public abstract class ICommand implements CommandExecutor, TabCompleter {
 
-    private ACommand aCommand;
+    private final ACommand aCommand;
 
     public ICommand(){
         this.aCommand = this.getClass().getAnnotation(ACommand.class);
+    }
+
+    @Override
+    public @Nullable List<String> onTabComplete(
+            @NotNull CommandSender commandSender,
+            @NotNull Command command,
+            @NotNull String s,
+            @NotNull String[] strings
+    ) {
+        return List.of(aCommand.args());
     }
 
     @Override
@@ -55,7 +66,7 @@ public abstract class ICommand implements CommandExecutor {
     public abstract void onExecute(Player player, String[] args);
     public abstract void onExecute(CommandSender sender, String[] args);
 
-    public ACommand getaCommand() {
+    public ACommand getMeta() {
         return aCommand;
     }
 }

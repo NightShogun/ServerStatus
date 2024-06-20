@@ -8,3 +8,8 @@ description: A simple plugin to alter the server's status at multiplayer menu
 load: POSTWORLD
 author: Skylar11D
 website: Skylar11D.xyz
+folia-supported: true
+
+commands:
+  serverstatus:
+    description: A command to interact with the status and its behavior

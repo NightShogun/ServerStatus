@@ -11,6 +11,7 @@ public @interface ACommand {
 
     String name();
     String requires() default "";
+    String[] args() default "";
     boolean onlyPlayers() default false;
 
 }
