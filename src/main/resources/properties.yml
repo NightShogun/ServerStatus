@@ -1,5 +1,5 @@
 motd:
-  text: 'hi'
+  text: "it's working :)"
 version:
   display:
     text: ''

@@ -1,6 +1,7 @@
 package xyz.skylar11d.minecraftp.serverstatus.utilities.builder;
 
 import com.google.gson.JsonObject;
+import org.bukkit.Bukkit;
 
 public class StatusPacket {
 
@@ -15,6 +16,7 @@ public class StatusPacket {
         if(protocol == 0)return this;
 
         JsonObject version = new JsonBuilder()
+                .addProperty("name","y")
                 .addProperty("protocol", protocol)
                 .build();
 
@@ -25,32 +27,12 @@ public class StatusPacket {
 
     public StatusPacket version(String display){
 
-        if(display.isEmpty())return this;
-
-        JsonObject version = new JsonBuilder()
-                .addProperty("name", display)
-                .build();
-
-        this.object.add("version", version);
-
-        return this;
-    }
-
-    public StatusPacket version(String display, int protocol){
-
-        if(display.isEmpty() && protocol != 0) {
-            this.version(protocol);
-            return this;
-        }
-
-        if(!display.isEmpty() && protocol == 0) {
-            this.version(display);
+        if(display.isEmpty() || display == null){
             return this;
         }
 
         JsonObject version = new JsonBuilder()
                 .addProperty("name", display)
-                .addProperty("protocol", protocol)
                 .build();
 
         this.object.add("version", version);
@@ -60,15 +42,18 @@ public class StatusPacket {
 
     public StatusPacket players(String hover){
 
-        if(hover.isEmpty())
-            throw new IllegalArgumentException("The 'hover' field shoudn't be empty, check the respective configuration file");
+        if((hover.isEmpty() || hover == null)){
+            return this;
+        }
 
         JsonObject sample = new JsonBuilder()
                 .addProperty("name", hover)
                 .build();
 
         JsonObject players = new JsonBuilder()
-                .addKey("sample", sample)
+                .addProperty("max", Bukkit.getMaxPlayers())
+                .addProperty("online", Bukkit.getOnlinePlayers().size())
+                //.addKey("sample", sample)
                 .build();
 
         this.object.add("players", players);
@@ -84,7 +69,8 @@ public class StatusPacket {
 
         JsonObject players = new JsonBuilder()
                 .addProperty("max", max)
-                .addKey("sample", sample)
+                .addProperty("online", Bukkit.getOnlinePlayers().size())
+                //.addKey("sample", sample)
                 .build();
 
         this.object.add("players", players);
@@ -92,11 +78,17 @@ public class StatusPacket {
         return this;
     }
 
-    public StatusPacket motd(String text){
+    public StatusPacket motd(String motd){
 
-        if(text.isEmpty())throw new IllegalArgumentException("The 'text' field in the motd section shoudn't be empty, check the respective configuration file");
+        if((motd.isEmpty() || motd == null)) {
+            return this;
+        }
 
-        this.object.addProperty("description", text);
+        JsonObject text = new JsonBuilder()
+                .addProperty("text", motd)
+                .build();
+
+        this.object.add("description", text);
 
         return this;
     }

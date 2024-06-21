@@ -10,15 +10,18 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import xyz.skylar11d.minecraftp.serverstatus.Main;
 
 import java.util.List;
 
 public abstract class ICommand implements CommandExecutor, TabCompleter {
 
     private final ACommand aCommand;
+    protected final Main main;
 
-    public ICommand(){
+    public ICommand(Main instance){
         this.aCommand = this.getClass().getAnnotation(ACommand.class);
+        this.main = instance;
     }
 
     @Override

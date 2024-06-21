@@ -1,5 +1,6 @@
 package xyz.skylar11d.minecraftp.serverstatus.listeners;
 
+import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketListener;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.event.PacketSendEvent;
@@ -22,7 +23,7 @@ public class ClientBoundStatusInterceptor implements PacketListener {
 
     public ClientBoundStatusInterceptor(Main instance){
         //this.main = instance;
-        this.properties = instance.getProvider().getConfigManager().getConfig(ConfigType.properties);
+        this.properties = instance.getProvider().getConfigManager().get(ConfigType.PROPERTIES);
     }
 
     @Override
@@ -32,14 +33,27 @@ public class ClientBoundStatusInterceptor implements PacketListener {
 
             if(!(event.getPacketType() == PacketType.Status.Server.RESPONSE)) return;
 
-            WrapperStatusServerResponse wrappedPacket = new WrapperStatusServerResponse(event);
+            WrapperStatusServerResponse response = new WrapperStatusServerResponse(event);
+
+            Main.LOG.info(response.getComponentJson());
 
             String motd = properties.orElseThrow().getString("motd.text");
             String verMsg = properties.orElseThrow().getString("version.display.text");
             String hover = properties.orElseThrow().getString("version.display.hover");
             int protocol = properties.orElseThrow().getInt("version.protocol");
 
-            buildPacket(motd, verMsg, hover, protocol, wrappedPacket);
+            JsonObject mutated = new StatusPacket()
+                    .version(verMsg)
+                    .version(protocol)
+                    .motd(motd)
+                    .players(hover)
+                    .toJSON();
+
+            response.setComponent(mutated);
+
+            Main.LOG.info(response.getComponentJson() + "\n" + verMsg);
+
+            PacketEvents.getAPI().getProtocolManager().sendPackets(event.getPlayer(), mutated);
 
         }
 
@@ -49,10 +63,11 @@ public class ClientBoundStatusInterceptor implements PacketListener {
     private void buildPacket(String motd, String verMsg, String hover, int protocol, WrapperStatusServerResponse response){
 
         JsonObject mutated = new StatusPacket()
-                .version(verMsg, protocol)
-                    .players(hover)
-                        .motd(motd)
-                            .toJSON();
+                .version(verMsg)
+                    .version(protocol)
+                        .players(hover)
+                            .motd(motd)
+                                .toJSON();
 
         response.setComponent(mutated);
 
@@ -60,7 +75,7 @@ public class ClientBoundStatusInterceptor implements PacketListener {
 
 
 
-    @Override
+    /*@Override
     public void onPacketReceive(PacketReceiveEvent e) {
         synchronized (this) {
             if (e.getPacketType() == PacketType.Handshaking.Client.HANDSHAKE) {
@@ -73,5 +88,5 @@ public class ClientBoundStatusInterceptor implements PacketListener {
             }
         }
 
-    }
+    }*/
 }

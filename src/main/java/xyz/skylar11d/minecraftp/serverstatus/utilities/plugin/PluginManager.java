@@ -21,7 +21,7 @@ public class PluginManager {
 
         initAPI();
         registerListeners();
-        registerCommands(new ServerStatus());
+        registerCommands(new ServerStatus(main));
 
     }
 

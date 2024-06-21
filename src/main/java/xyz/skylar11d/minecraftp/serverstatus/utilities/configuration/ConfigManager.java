@@ -1,10 +1,12 @@
 package xyz.skylar11d.minecraftp.serverstatus.utilities.configuration;
 
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import xyz.skylar11d.minecraftp.serverstatus.Main;
 import xyz.skylar11d.minecraftp.serverstatus.utilities.configuration.type.ConfigType;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Optional;
 
 public class ConfigManager {
@@ -30,12 +32,25 @@ public class ConfigManager {
 
     }
 
-    public Optional<YamlConfiguration> getConfig(ConfigType type){
+    public Optional<YamlConfiguration> get(ConfigType type){
 
-        if (type == ConfigType.properties)
+        if (type == ConfigType.PROPERTIES)
             return Optional.ofNullable(propYaml);
 
         return Optional.empty();
+    }
+
+    public void load(ConfigType type) throws IOException, InvalidConfigurationException {
+
+        if (type == ConfigType.PROPERTIES) {
+
+            propYaml.load(propF);
+
+            return;
+        }
+
+        throw new EnumConstantNotPresentException(type.getClass(), type.name());
+
     }
 
 }
