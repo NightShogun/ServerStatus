@@ -63,10 +63,11 @@ public class ServerStatus extends ICommand {
     }
 
     private boolean criteriaMet(String... args){
-        var c0 = (args.length < getMeta().args().length && args.length > getMeta().args().length);
-        var c1 = !(args[0].equalsIgnoreCase(getMeta().args()[0]));
+        if((args.length < getMeta().args().length && args.length > getMeta().args().length)){
+            return false;
+        }
 
-        return !c0 && !c1;
+        return args[0] == null || args[0].equalsIgnoreCase(getMeta().args()[0]);
     }
 
 }

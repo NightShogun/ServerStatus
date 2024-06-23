@@ -3,6 +3,8 @@ package xyz.skylar11d.minecraftp.serverstatus.utilities.builder;
 import com.google.gson.JsonObject;
 import org.bukkit.Bukkit;
 
+import java.util.List;
+
 public class StatusPacket {
 
     private final JsonObject object;
@@ -16,7 +18,6 @@ public class StatusPacket {
         if(protocol == 0)return this;
 
         JsonObject version = new JsonBuilder()
-                .addProperty("name","y")
                 .addProperty("protocol", protocol)
                 .build();
 
@@ -27,7 +28,7 @@ public class StatusPacket {
 
     public StatusPacket version(String display){
 
-        if(display.isEmpty() || display == null){
+        if (display == null){
             return this;
         }
 
@@ -40,20 +41,46 @@ public class StatusPacket {
         return this;
     }
 
-    public StatusPacket players(String hover){
+    public StatusPacket version(String display, int protocol){
 
-        if((hover.isEmpty() || hover == null)){
+        if (display == null){
+            return this;
+        }
+
+        JsonObject version = new JsonBuilder()
+                .addProperty("name", display)
+                .addProperty("protocol", protocol)
+                .build();
+
+        this.object.add("version", version);
+
+        return this;
+    }
+
+    public StatusPacket players(String hover, String uuid){
+
+        if(hover == null){
+
+            JsonObject players = new JsonBuilder()
+                    .addProperty("max", Bukkit.getMaxPlayers())
+                    .addProperty("online", Bukkit.getOnlinePlayers().size())
+                    //.addProperty("sample", List.of(sample).toString())
+                    .build();
+
+            this.object.add("players", players);
+
             return this;
         }
 
         JsonObject sample = new JsonBuilder()
                 .addProperty("name", hover)
+                .addProperty("id", uuid)
                 .build();
 
         JsonObject players = new JsonBuilder()
                 .addProperty("max", Bukkit.getMaxPlayers())
                 .addProperty("online", Bukkit.getOnlinePlayers().size())
-                //.addKey("sample", sample)
+                .addProperty("sample", List.of(sample).toString())
                 .build();
 
         this.object.add("players", players);
@@ -61,16 +88,29 @@ public class StatusPacket {
         return this;
     }
 
-    public StatusPacket players(int max, String hover){
+    public StatusPacket players(int max, String hover, String uuid){
+
+        if(hover == null){
+            JsonObject players = new JsonBuilder()
+                    .addProperty("max", Bukkit.getMaxPlayers())
+                    .addProperty("online", Bukkit.getOnlinePlayers().size())
+                    //.addProperty("sample", List.of(sample).toString())
+                    .build();
+
+            this.object.add("players", players);
+
+            return this;
+        }
 
         JsonObject sample = new JsonBuilder()
                 .addProperty("name", hover)
+                .addProperty("id", uuid)
                 .build();
 
         JsonObject players = new JsonBuilder()
                 .addProperty("max", max)
                 .addProperty("online", Bukkit.getOnlinePlayers().size())
-                //.addKey("sample", sample)
+                .addProperty("sample", List.of(sample).toString())
                 .build();
 
         this.object.add("players", players);
@@ -80,7 +120,7 @@ public class StatusPacket {
 
     public StatusPacket motd(String motd){
 
-        if((motd.isEmpty() || motd == null)) {
+        if(motd == null){
             return this;
         }
 

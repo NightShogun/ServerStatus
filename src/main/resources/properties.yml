@@ -1,7 +1,7 @@
 motd:
-  text: "it's working :)"
+  text: "§cAnother minecraft server"
 version:
   display:
-    text: ''
-    hover: ''
+    text: "§eanother test"
+    hover: "§6secret message"
   protocol: 763 #the protocol number for 1.20 version, check the wiki for more info about minecraft version protocols numbers

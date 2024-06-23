@@ -1,6 +1,5 @@
 package xyz.skylar11d.minecraftp.serverstatus.listeners;
 
-import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketListener;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.event.PacketSendEvent;
@@ -15,6 +14,7 @@ import xyz.skylar11d.minecraftp.serverstatus.utilities.builder.StatusPacket;
 import xyz.skylar11d.minecraftp.serverstatus.utilities.configuration.type.ConfigType;
 
 import java.util.Optional;
+import java.util.UUID;
 
 public class ClientBoundStatusInterceptor implements PacketListener {
 
@@ -46,14 +46,10 @@ public class ClientBoundStatusInterceptor implements PacketListener {
                     .version(verMsg)
                     .version(protocol)
                     .motd(motd)
-                    .players(hover)
+                    .players(hover, UUID.randomUUID().toString())
                     .toJSON();
 
-            response.setComponent(mutated);
-
-            Main.LOG.info(response.getComponentJson() + "\n" + verMsg);
-
-            PacketEvents.getAPI().getProtocolManager().sendPackets(event.getPlayer(), mutated);
+            buildPacket(motd, verMsg,hover, protocol, response);
 
         }
 
@@ -65,7 +61,7 @@ public class ClientBoundStatusInterceptor implements PacketListener {
         JsonObject mutated = new StatusPacket()
                 .version(verMsg)
                     .version(protocol)
-                        .players(hover)
+                        .players(hover, UUID.randomUUID().toString())
                             .motd(motd)
                                 .toJSON();
 
@@ -75,18 +71,18 @@ public class ClientBoundStatusInterceptor implements PacketListener {
 
 
 
-    /*@Override
+    @Override
     public void onPacketReceive(PacketReceiveEvent e) {
         synchronized (this) {
             if (e.getPacketType() == PacketType.Handshaking.Client.HANDSHAKE) {
 
                 WrapperHandshakingClientHandshake wrapperPacket = new WrapperHandshakingClientHandshake(e);
 
-                wrapperPacket.setProtocolVersion(ClientVersion.V_1_20.getProtocolVersion());
-                wrapperPacket.setClientVersion(ClientVersion.V_1_20);
+                wrapperPacket.setProtocolVersion(763);
+                wrapperPacket.setClientVersion(ClientVersion.V_1_20_5);
 
             }
         }
 
-    }*/
+    }
 }
