@@ -42,13 +42,6 @@ public class ClientBoundStatusInterceptor implements PacketListener {
             String hover = properties.orElseThrow().getString("version.display.hover");
             int protocol = properties.orElseThrow().getInt("version.protocol");
 
-            JsonObject mutated = new StatusPacket()
-                    .version(verMsg)
-                    .version(protocol)
-                    .motd(motd)
-                    .players(hover, UUID.randomUUID().toString())
-                    .toJSON();
-
             buildPacket(motd, verMsg,hover, protocol, response);
 
         }
@@ -58,7 +51,7 @@ public class ClientBoundStatusInterceptor implements PacketListener {
 
     private void buildPacket(String motd, String verMsg, String hover, int protocol, WrapperStatusServerResponse response){
 
-        JsonObject mutated = new StatusPacket()
+        JsonObject mutant = new StatusPacket()
                 .version(verMsg)
                     .version(protocol)
                         .players(hover, UUID.randomUUID().toString())
