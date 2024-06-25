@@ -64,7 +64,7 @@ public class ClientBoundStatusInterceptor implements PacketListener {
 
 
 
-    @Override
+    /*@Override
     public void onPacketReceive(PacketReceiveEvent e) {
         synchronized (this) {
             if (e.getPacketType() == PacketType.Handshaking.Client.HANDSHAKE) {
@@ -77,5 +77,5 @@ public class ClientBoundStatusInterceptor implements PacketListener {
             }
         }
 
-    }
+    }*/
 }
