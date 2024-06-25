@@ -27,7 +27,7 @@ public class ConfigManager {
 
         if(!propF.exists()) {
             main.getLogger().info(propF.getName().toLowerCase() + " wasn't found!, generating new one..");
-            main.saveResource("properties.yml", true);
+            main.saveResource("properties.yml", true); //since it doesn't exist, it won't replace a one
         }
 
     }
