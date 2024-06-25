@@ -35,7 +35,7 @@ public class ClientBoundStatusInterceptor implements PacketListener {
 
             WrapperStatusServerResponse response = new WrapperStatusServerResponse(event);
 
-            Main.LOG.info(response.getComponentJson());
+            //Main.LOG.info(response.getComponentJson()); DEBUG
 
             String motd = properties.orElseThrow().getString("motd.text");
             String verMsg = properties.orElseThrow().getString("version.display.text");
